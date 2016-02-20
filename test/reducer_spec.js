@@ -67,4 +67,41 @@ describe('reducer', () => {
       }));
   });
 
+  it('handles SET_STATE by setting hasVoted', () => {
+      const state = fromJS({
+          vote: {
+            pair: ['Trainspotting', '28 Days Later'],
+            tally: {Trainspotting: 1}
+          }
+      });
+      const action = {type: 'VOTE', entry: 'Trainspotting'};
+      const nextState = reducer(state, action);
+
+      expect(nextState).to.equal(fromJS({
+        vote: {
+          pair: ['Trainspotting', '28 Days Later'],
+          tally: {Trainspotting: 1}
+        },
+        hasVoted: 'Trainspotting'
+      }));
+  });
+
+  it('does NOT set hasVoted for invalid entry', () => {
+      const state = fromJS({
+        vote: {
+          pair: ['Trainspotting', '28 Days Later'],
+          tally: {Trainspotting: 1}
+        }
+      });
+      const action = {type: 'VOTE', entry: 'Sunshine'};
+      const nextState = reducer(state, action);
+
+      expect(nextState).to.equal(fromJS({
+          vote: {
+            pair: ['Trainspotting', '28 Days Later'],
+            tally: {Trainspotting: 1}
+          }
+      }));
+  });
+
 })
